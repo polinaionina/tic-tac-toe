@@ -9,6 +9,7 @@ addResetListener();
 
 let currentPlayer = ZERO;
 let count = 0;
+let flagWinner = false;
 
 let arr = [[EMPTY, EMPTY, EMPTY],
     [EMPTY, EMPTY, EMPTY],
@@ -69,6 +70,10 @@ function renderGrid(dimension) {
 }
 
 function cellClickHandler(row, col) {
+    if (flagWinner) {
+        return
+    }
+
     let cell = findCell(row, col);
     if (cell.textContent === EMPTY) {
         renderSymbolInCell(currentPlayer, row, col);
@@ -77,6 +82,7 @@ function cellClickHandler(row, col) {
         winner = checkWinner();
         if (winner !== EMPTY) {
             alert(`Winner is ${winner}`);
+            flagWinner = true;
         }
 
         currentPlayer = (currentPlayer !== ZERO) ? ZERO : CROSS;
@@ -108,6 +114,16 @@ function addResetListener() {
 }
 
 function resetClickHandler() {
+    for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+            renderSymbolInCell(EMPTY, i, j);
+            arr[i][j] = EMPTY;
+        }
+    }
+
+    currentPlayer = ZERO;
+    count = 0;
+    flagWinner = false;
     console.log('reset!');
 }
 
